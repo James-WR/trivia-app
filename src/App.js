@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import Question from './components/Question'
+import {useEffect, useState} from "react"
+
 
 function App() {
+  const [data, setData] = useState([])
+
+  // This useEffect fetches from the API and then changes the 'incorrect answers'
+  // array into an array of objects. It then makes the result our new data state
+  useEffect(() => {
+    fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=hard")
+    .then(res => res.json())
+      .then(data => setData(data.results.map(question => {
+        return {
+          ...question, incorrect_answers: question.incorrect_answers.map(ans => {
+            return { text: ans, selected: false, correct: false }
+          })
+        }
+      })))
+  }, [])
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Question />
   );
 }
 
