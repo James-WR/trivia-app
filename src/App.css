@@ -1,0 +1,7 @@
+.answers-container {
+  display: flex
+}
+
+button {
+  margin: 8px;
+}
