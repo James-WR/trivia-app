@@ -15,7 +15,7 @@ function App() {
 
   // fetches from api and formats answers into a single randomised array of answer objects
   useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=hard")
+    fetch("https://opentdb.com/api.php?amount=7&category=22&difficulty=hard")
       .then(res => res.json())
       .then(data => setQuestions(data.results.map(question => {
         return {
@@ -83,6 +83,7 @@ function App() {
   function resetGame() {
     setReset(prev => !prev)
     resetSubmittedState()
+    setSelectedTotal(0)
   }
 
   function countSelected() {
@@ -104,7 +105,7 @@ function App() {
       <>
         {questionElements}
         {!submitted && <button disabled={selectedTotal < questions.length} className="submit-button" onClick={checkAnswers}>Submit answers</button >}
-        {submitted && <p>You got {correctTotal} / 5</p>}
+        {submitted && <p>You got {correctTotal} / {questions.length} </p>}
         {submitted && <button onClick={resetGame}>Replay</button >}
       </>
       }

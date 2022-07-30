@@ -5,11 +5,6 @@ export default function Question(props) {
   const answerElements = props.answers.map(answer => {
     return <Answer key={answer.id} id={answer.id} click={props.click} correct={answer.correct} text={answer.text} selected={answer.selected} parent={answer.parent} submitted={props.submitted}/>
   })
-  // console.log(answerElements)
-
-  // props.answers.forEach(answer => {
-  //   console.log(answer)
-  // })
 
   return (
     <div>
