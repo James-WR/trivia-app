@@ -2,6 +2,7 @@ import './App.css';
 import Question from './components/Question'
 import { nanoid } from 'nanoid'
 import { useEffect, useState } from "react"
+import StartScreen from './components/Startscreen';
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   const [correctTotal, setCorrectTotal] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [reset, setReset] = useState(false)
+  const [started, setStarted] = useState(false)
 
   // fetches from api and formats answers into a single randomised array of answer objects
   useEffect(() => {
@@ -17,7 +19,7 @@ function App() {
       .then(res => res.json())
       .then(data => setQuestions(data.results.map(question => {
         return {
-          ...question, id: nanoid(),
+          ...question,
           answers:
             [ ...question.incorrect_answers.map(ans => {
               return { text: ans, selected: false, correct: false, id: nanoid(), parent: question.question }
@@ -26,6 +28,7 @@ function App() {
         }
       })))
   }, [reset])
+
 
   function selectAnswer(id, parent) {
     if (!submitted)
@@ -52,6 +55,7 @@ function App() {
               answers={element.answers}
               correct={element.correct_answer}
               click={selectAnswer}
+              submitted={submitted}
             />
   })
 
@@ -67,9 +71,18 @@ function App() {
     setSubmitted(true)
   }
 
-  function resetGame() {
+  function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time))
+  }
+
+  async function resetSubmittedState() {
+    await delay(300)
     setSubmitted(false)
+  }
+
+  function resetGame() {
     setReset(prev => !prev)
+    resetSubmittedState()
   }
 
   function countSelected() {
@@ -81,12 +94,20 @@ function App() {
     setSelectedTotal(selectedAnswers.length + 1)
   }
 
+  function startGame() {
+    setStarted(true)
+  }
+
   return (
     <div>
-      {questionElements}
-      <button disabled={selectedTotal < questions.length} className="submit-button" onClick={checkAnswers}>Submit answers</button >
-      {submitted && <p>You got {correctTotal} / 5</p>}
-      {submitted && <button onClick={resetGame}>Replay</button >}
+      {!started ? <StartScreen startGame={startGame}/> :
+      <>
+        {questionElements}
+        {!submitted && <button disabled={selectedTotal < questions.length} className="submit-button" onClick={checkAnswers}>Submit answers</button >}
+        {submitted && <p>You got {correctTotal} / 5</p>}
+        {submitted && <button onClick={resetGame}>Replay</button >}
+      </>
+      }
     </div>
   );
 }

@@ -5,3 +5,7 @@
 button {
   margin: 8px;
 }
+
+.wrong {
+  background-color: red;
+}
