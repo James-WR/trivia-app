@@ -5,6 +5,6 @@ export default function Answer(props) {
     backgroundColor: props.selected ? "lightGreen": "lightGrey"
   }
   return (
-    <button style={styles} onClick = {() => props.click(props.id)}>{props.text}</button>
+    <button style={styles} onClick = {() => props.click(props.id, props.parent)}>{props.text}</button>
   )
 }
