@@ -100,7 +100,7 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       {!started ? <StartScreen startGame={startGame}/> :
       <>
         {questionElements}
@@ -109,7 +109,7 @@ function App() {
         {submitted && <button onClick={resetGame}>Replay</button >}
       </>
       }
-    </div>
+    </>
   );
 }
 
