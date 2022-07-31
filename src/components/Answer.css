@@ -1,0 +1,14 @@
+.answer-button {
+  margin: 0.5% 2% 2% 0;
+  color: #293264;
+  font-family: 'karla', sans-serif;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.6% 2%;
+}
+
+.answer-button:hover {
+  cursor: pointer;
+  transform: scale(1.07);
+  color: #11152b
+}

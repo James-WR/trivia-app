@@ -1,5 +1,6 @@
 import React from 'react'
 import Answer from './Answer'
+import './Question.css'
 
 export default function Question(props) {
   const answerElements = props.answers.map(answer => {
@@ -7,11 +8,11 @@ export default function Question(props) {
   })
 
   return (
-    <div>
-      <p><strong>{props.question}</strong></p>
-      <div className="answers-container">
-        {answerElements}
+      <div className="question-main">
+        <p>{props.question}</p>
+        <div className="answers-container">
+          {answerElements}
+        </div>
       </div>
-    </div>
   )
 }

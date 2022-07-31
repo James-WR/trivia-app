@@ -1,6 +1,7 @@
 import './App.css';
 import Question from './components/Question'
 import { nanoid } from 'nanoid'
+import { decode } from 'he'
 import { useEffect, useState } from "react"
 import StartScreen from './components/Startscreen';
 
@@ -15,16 +16,17 @@ function App() {
 
   // fetches from api and formats answers into a single randomised array of answer objects
   useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=7&category=22&difficulty=hard")
+    fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=hard")
       .then(res => res.json())
       .then(data => setQuestions(data.results.map(question => {
         return {
-          ...question,
+          ...question, question: decode(question.question),
           answers:
             [ ...question.incorrect_answers.map(ans => {
               return { text: ans, selected: false, correct: false, id: nanoid(), parent: question.question }
             }), { text: question.correct_answer, selected: false, correct: true, id: nanoid(), parent: question.question }
-            ].sort((a, b) => 0.5 - Math.random())
+            ]
+            .sort((a, b) => 0.5 - Math.random())
         }
       })))
   }, [reset])
@@ -103,10 +105,16 @@ function App() {
     <>
       {!started ? <StartScreen startGame={startGame}/> :
       <>
-        {questionElements}
-        {!submitted && <button disabled={selectedTotal < questions.length} className="submit-button" onClick={checkAnswers}>Submit answers</button >}
-        {submitted && <p>You got {correctTotal} / {questions.length} </p>}
-        {submitted && <button onClick={resetGame}>Replay</button >}
+        <div className="circle-topright"></div>
+        <div className="circle-bottomleft"></div>
+        <div className="questions-container">
+          {questionElements}
+        </div>
+        <div className="submit-container">
+          {!submitted && <button disabled={selectedTotal < questions.length} className="submit-button" onClick={checkAnswers}>Submit answers</button >}
+          {submitted && <p className="result-text">You got {correctTotal} out of {questions.length} </p>}
+          {submitted && <button className="replay-button" onClick={resetGame}>Replay</button >}
+        </div>
       </>
       }
     </>

@@ -1,0 +1,10 @@
+.question-main {
+  border-bottom: 1.5px solid #DBDEF0;
+  margin: 2% 0;
+  font-family: 'karla', sans-serif;
+}
+
+.question-main p {
+  font-weight: 800;
+  color: #293264
+}
